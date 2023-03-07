@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>00</title>
+	<meta charset="utf-8">
+	<script src="jq.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div class="can">
+		<canvas width="660" id="canvas" height="480" style="border: solid; display: block;margin:0 auto;"></canvas>
+	</div>
+	<div>
+		<button style="border: solid; display: block;margin:0 auto;" id="re">re</button>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+window.onload=()=>{
+var c=document.getElementById("canvas");
+var ctx=c.getContext("2d");
+var btn = document.getElementById("re");
+var all=[];
+var bi=1;
+var drawbuilding=(what,x,y)=>{
+	switch(what){
+		case 0:
+		// ctx.beginPath();
+		// ctx.arc((x-1)*60+30,(y-1)*60+30,20,0,2*Math.PI);
+		// ctx.stroke();
+		ctx.fillStyle="blue";
+		ctx.beginPath();
+		ctx.arc(x*60+30,y*60+30,20,0,2*Math.PI);
+		ctx.stroke();
+		ctx.fill();
+		ctx.fillStyle="red";
+		ctx.font="15px Arial";
+		ctx.fillText("基地",x*60+15,y*60+30);
+		break;
+		case 1:
+		ctx.beginPath();
+		ctx.fillStyle="red";
+		ctx.fillRect(x*60+2,y*60+2,54,54);
+		ctx.fillStyle="blue";
+		ctx.font="10px Arial";
+		ctx.fillText("方形堡垒",x*60+10.5,y*60+27,54,54);
+		break;
+		case 2:
+		ctx.beginPath();
+		ctx.fillStyle="black";
+		ctx.arc(x*60+30,y*60+30,25,0,2*Math.PI);
+		ctx.stroke();
+		ctx.fill();
+		ctx.fillStyle="white";
+		ctx.font="10px Arial";
+		ctx.fillText("圆形堡垒",x*60+10.5,y*60+30);
+		break;
+	}	
+}
+c.onclick=(ev)=>{
+	let xx = ev.offsetX;
+	let yy = ev.offsetY;
+	//console.log("x:"+x+",y:"+y+";x:"+Math.ceil(x/60)+",y:"+Math.ceil(y/60));
+	xx = Math.ceil(xx/60)-1;
+	yy = Math.ceil(yy/60)-1;
+	for (var i = 0; i < all.length; i++) {
+		if (all[i].x==xx&&all[i].y==yy) {
+			var sss =false;
+		}	
+	}
+	if (sss !== false) {
+		if (bi%2+1 != 0) {
+			all.push({
+			what:parseInt(bi%2+1),
+			x:xx,
+			y:yy
+		});
+		bi++;
+		console.log(bi);
+		drawbuilding(all[bi-1].what,all[bi-1].x,all[bi-1].y);
+		console.log(all);
+		} else {
+			bi++;
+		}
+	} else {
+		alert("err");
+	}
+}
+re.onclick=()=>{
+	newgame();
+}
+c.onmouseover=(ev)=>{
+	let xx = ev.offsetX;
+	let yy = ev.offsetY;
+	//console.log("x:"+x+",y:"+y+";x:"+Math.ceil(x/60)+",y:"+Math.ceil(y/60));
+	xx = Math.ceil(xx/60)-1;
+	yy = Math.ceil(yy/60)-1;
+	var para = document.createElement("progress");;
+	// if (para==true) {
+	// 	alert("suc!");
+	// } else {
+	// 	alert("err!");
+	// }
+
+
+} 
+var draw=()=>{
+	ctx.clearRect( 0,0,700,500);
+	ctx.fillStyle="rgba(248,248,248,0.88)";
+	//ctx.fillStyle=" #a3a3c2";
+	for (let i = 0; i< 11; i++) {
+		for (let j = 0; j<8; j++) {
+			ctx.fillRect(i*60,j*60,58,58);
+			//ctx.fillRect(i*60,j*60,58,58);
+		}
+	}
+	for (let i = 0; i < all.length; i++) {
+		var body=all[i];
+		//console.log(body);
+		drawbuilding(body.what,body.x,body.y);
+	}
+
+}
+var newgame=()=>{
+	all=[];
+	all.push({
+		what:0,
+		x:5,
+		y:3,
+		hp:100
+	});
+	bi=1;
+
+	draw();
+}
+newgame();	
+}
+</script>
